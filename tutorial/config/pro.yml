@@ -1,0 +1,2 @@
+MongoDB:
+  client: 'mongodb://credit:credit@10.2.1.56:27017,10.2.1.79:27017,10.2.13.251:27018/credit?replicaSet=pszxdb'
