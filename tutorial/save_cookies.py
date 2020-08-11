@@ -14,7 +14,9 @@ from selenium import webdriver
 
 client = redis.StrictRedis()
 url = ''
-driver = webdriver.Chrome()
+option = webdriver.ChromeOptions()
+option.add_experimental_option('excludeSwitches', ['enable-automation'])
+driver = webdriver.Chrome(options=option)
 driver.get(url)
 user = driver.find_element_by_xpath('')
 user.clear()
