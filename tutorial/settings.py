@@ -56,9 +56,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
-#    'scrapy.extensions.telnet.TelnetConsole': None,
-#}
+EXTENSIONS = {
+   'scrapy.extensions.closespider.CloseSpider': 500,
+}
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
@@ -87,6 +87,13 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+CLOSESPIDER_TIMEOUT = 60.0  # 指定时间退出
+
+CLOSESPIDER_ITEMCOUNT = None  # 生成了指定数量的item
+
+CLOSESPIDER_PAGECOUNT = None  # 抓取了指定数量的响应
+
+CLOSESPIDER_ERRORCOUNT = 20  # 在发生指定数量的错误
 
 '''
 中间件优先顺序

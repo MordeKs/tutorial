@@ -26,3 +26,4 @@ class QuotesSpider(scrapy.Spider):
             tags_css = item_node.css('.tag')
             tutorial_item['tags'] = [''.join(i.css('::text').extract()).strip() for i in tags_css]
             yield tutorial_item
+        self.crawler.engine.close_spider(self, '爬虫任务结束关闭爬虫')

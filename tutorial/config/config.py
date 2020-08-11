@@ -25,9 +25,7 @@ with open(confpath, 'r', encoding='utf8') as f:
 
 client = config['MongoDB']['client']
 
-PROXIES = ['https://114.217.243.25:8118',
-          'https://125.37.175.233:8118',
-          'http://1.85.116.218:8118']
+PROXIES = ['http://10.2.1.31:8070']
 
 USER_AGENT_LIST = [
   "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
