@@ -2,12 +2,15 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import time
 
 from scrapy import signals
 import random
 
 from scrapy.exceptions import NotConfigured
 from scrapy.utils import reactor
+from selenium import webdriver
+from scrapy.http import HtmlResponse
 
 from tutorial.config.config import *
 import redis
@@ -120,7 +123,7 @@ class ProxyMiddleware:
 # UA中间件
 class UAMiddleware:
     def process_request(self,request,spider):
-        ua = random.choice(UAMiddleware)
+        ua = random.choice(USER_AGENT_LIST)
         request.headers['User-Agent'] = ua
 
 # 登录cookies中间件
@@ -194,3 +197,15 @@ class CloseSpider:
         task = getattr(self, 'task', False)
         if task and task.active():
             task.cancel()
+
+
+class SeleniumMiddleware:
+    def __init__(self):
+        self.driver = webdriver.Chrome()
+
+    def process_request(self, request, spider):
+        if spider.name == 'seleniumSpider':
+            self.driver.get(request.url)
+            time.sleep(2)
+            body = self.driver.page_source
+        return HtmlResponse(self.driver.current_url,body=body,encoding='utf-8',request=request)

@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'tutorial.spiders'
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -52,6 +52,8 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'tutorial.middlewares.ProxyMiddleware': 543,
+   'tutorial.middlewares.SeleniumMiddleware': 545,
+   'tutorial.middlewares.UAMiddleware': 544,
 }
 
 # Enable or disable extensions
@@ -96,7 +98,7 @@ CLOSESPIDER_PAGECOUNT = None  # 抓取了指定数量的响应
 CLOSESPIDER_ERRORCOUNT = 20  # 在发生指定数量的错误
 
 '''
-中间件优先顺序
+下载中间件优先顺序
 {
     'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware': 100,
     'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware': 300,
@@ -112,5 +114,13 @@ CLOSESPIDER_ERRORCOUNT = 20  # 在发生指定数量的错误
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 750,
     'scrapy.downloadermiddlewares.stats.DownloaderStats': 850,
     'scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware': 900
+}
+爬虫中间件
+{
+   'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware': 50,
+   'scrapy.spidermiddlewares.offsite.OffsiteMiddleware': 500,
+   'scrapy.spidermiddlewares.referer.RefererMiddleware': 700,
+   'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware': 800,
+   'scrapy.spidermiddlewares.depth.DepthMiddleware': 900,
 }
 '''
