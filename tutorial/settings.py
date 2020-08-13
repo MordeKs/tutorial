@@ -51,8 +51,8 @@ ROBOTSTXT_OBEY = False
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   'tutorial.middlewares.ProxyMiddleware': 543,
-   'tutorial.middlewares.SeleniumMiddleware': 545,
+   # 'tutorial.middlewares.ProxyMiddleware': 543,
+   # 'tutorial.middlewares.SeleniumMiddleware': 545,
    'tutorial.middlewares.UAMiddleware': 544,
 }
 
@@ -66,6 +66,7 @@ EXTENSIONS = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'tutorial.pipelines.TutorialPipeline': 200,
+   'tutorial.pipelines.ShenxuPipeline': 200,
 }
 
 
