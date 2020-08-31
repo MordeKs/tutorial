@@ -2,8 +2,11 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import base64
 import time
+from urllib.request import _parse_proxy
 
+from scrapy.utils.python import to_bytes
 from scrapy import signals
 import random
 
@@ -11,6 +14,8 @@ from scrapy.exceptions import NotConfigured
 from scrapy.utils import reactor
 from selenium import webdriver
 from scrapy.http import HtmlResponse
+from scrapy.downloadermiddlewares.retry import RetryMiddleware
+from twisted.internet.error import ConnectionDone, ConnectionRefusedError
 
 from tutorial.config.config import *
 import redis
@@ -115,8 +120,8 @@ class TutorialDownloaderMiddleware:
         spider.logger.info('Spider opened: %s' % spider.name)
 
 # 代理中间件
-class ProxyMiddleware:
-    def process_request(self,request,spider):
+class ProxyMiddleware(object):
+    def process_request(self, request, spider):
         proxy = random.choice(PROXIES)
         request.meta['proxy'] = proxy
 
@@ -127,14 +132,14 @@ class UAMiddleware:
         request.headers['User-Agent'] = ua
 
 # 登录cookies中间件
-# class LoginMiddleware:
-#     def __init__(self):
-#         self.client = redis.StrictRedis()
-#
-#     def process_request(self,request,spider):
-#         if spider.name == 'loginSpider':
-#             cookies = json.loads(self.client.lpop('cookies').decode())
-#             request.cookies = cookies
+class LoginMiddleware:
+    def __init__(self):
+        self.client = redis.StrictRedis()
+
+    def process_request(self,request,spider):
+        if spider.name == 'loginSpider':
+            cookies = json.loads(self.client.lpop('cookies').decode())
+            request.cookies = cookies
 
 
 """CloseSpider is an extension that forces spiders to be closed after certain
@@ -209,3 +214,16 @@ class SeleniumMiddleware:
             time.sleep(2)
             body = self.driver.page_source
         return HtmlResponse(self.driver.current_url,body=body,encoding='utf-8',request=request)
+
+
+class YuanquRetryMiddleware(RetryMiddleware):
+
+    def process_response(self, request, response, spider):
+        try:
+            entName = response.css('table.dataTable.f14 tbody tr td:nth-child(2) *::text').extract_first().strip()
+        except Exception as e:
+            entName = repr(e)
+
+        if '股权出质登记日期' not in entName:
+            return self._retry(request, entName, spider) or response
+        return response

@@ -11,4 +11,5 @@ from scrapy.cmdline import execute
 
 # execute(['scrapy','crawl','quotes','-o','items.json'])
 
-execute(['scrapy','crawl','shenxu'])
+# execute(['scrapy','crawl','shenxu'])
+execute(['scrapy','crawl','yuanqu_detail'])

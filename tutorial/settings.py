@@ -11,7 +11,7 @@ BOT_NAME = 'tutorial'
 
 SPIDER_MODULES = ['tutorial.spiders']
 NEWSPIDER_MODULE = 'tutorial.spiders'
-
+RETRY_TIMES = 10
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
@@ -67,6 +67,7 @@ EXTENSIONS = {
 ITEM_PIPELINES = {
    'tutorial.pipelines.TutorialPipeline': 200,
    'tutorial.pipelines.ShenxuPipeline': 200,
+   'tutorial.pipelines.YuanquPipeline': 200,
 }
 
 

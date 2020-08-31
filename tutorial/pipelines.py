@@ -40,3 +40,19 @@ class ShenxuPipeline:
 
     def __del__(self):
         self.client.close()
+
+
+class YuanquPipeline:
+    def __init__(self):
+        self.client = pymongo.MongoClient(client)
+        self.quotes_db = self.client['credit']['yuanqu_index']
+
+    def process_item(self, item, spider):
+        if spider.name == 'yuanqu_detail':
+            self.quotes_db.update_one({'province': item['province'], 'city': item['city'],'area': item['area'],'park_name': item['park_name']}, {'$set': item}, upsert=True)
+            # spider.crawler.engine.close_spider(spider, '全文结束关闭爬虫')
+            return item
+        return item
+
+    def __del__(self):
+        self.client.close()
